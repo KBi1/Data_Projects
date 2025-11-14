@@ -106,13 +106,8 @@ This plot shows how ages are distributed in the dataset.
 
 This graph compares marital status against income brackets.
 
-![Marital Status vs Income](./images/marital_income.png)
+<img width="1035" height="716" alt="image" src="https://github.com/user-attachments/assets/fafaea47-535f-4f79-a9da-9316f9508feb" />
 
-### Gender and Salary Comparison
-
-This shows how salary levels vary by gender.
-
-![Gender vs Salary](./images/gender_salary.png)
 
 ---
 
