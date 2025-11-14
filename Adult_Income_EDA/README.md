@@ -146,6 +146,3 @@ After cleaning and grouping the dataset, several consistent patterns appear. Edu
 * Use logistic regression, random forests, or boosting models.
 * Create an interactive dashboard using Plotly, Streamlit, or Power BI.
 
----
-
-*This README is written in UK English and follows professional documentation standards.*
