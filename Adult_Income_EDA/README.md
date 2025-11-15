@@ -2,7 +2,9 @@
 
 ## Overview
 
-This project explores the Adult Income dataset to understand how different factors relate to income levels. The work includes cleaning and grouping the data, preparing consistent categories, and building several visualisations to highlight trends in income across age, gender, education, marital status, and workclass.
+This project examines the Adult Income dataset to understand how different factors relate to income levels. The work includes cleaning the raw data, grouping similar categories and creating visualisations that highlight trends across age, gender, education, marital status and workclass.
+
+The aim is to show how structured preparation and clear visual analysis can produce meaningful insights from a large dataset.
 
 ---
 
@@ -10,7 +12,7 @@ This project explores the Adult Income dataset to understand how different facto
 
 ### Handling Missing Values
 
-The dataset includes entries marked as `"?"`, which were replaced with `NaN`:
+The dataset includes entries marked as `"?"`, which were replaced with `NaN` so they could be dealt with properly during cleaning.
 
 ```python
 df.replace('?', np.nan, inplace=True)
@@ -18,7 +20,7 @@ df.replace('?', np.nan, inplace=True)
 
 ### Grouping Marital Status
 
-To simplify analysis, similar categories were grouped:
+Several marital status categories describe similar situations, so they were grouped to make comparisons clearer:
 
 * **Married**
 * **Single**
@@ -38,22 +40,19 @@ df["Maritalstatus"] = df["Maritalstatus"].replace({
 
 ### Grouping Education
 
-Education levels were grouped as:
+Education levels were consolidated into broader groups. This reduced the number of small categories and made the income patterns easier to interpret:
 
-* **School**: Grades 1–8
-* **Higher School**: Grades 9–12
-* **College**: Associate-level
+* **School** (Grades 1–8)
+* **Higher School** (Grades 9–12)
+* **College** (Associate level)
 * **Degree / Masters**
 * **Doctorate**
 
-This reduced noise from having many small categories.
-
 ### Renaming Columns
 
-Some columns were renamed to make the dataset clearer and easier to read. This helped standardise naming across the analysis.
+Some columns were renamed to make them more readable and consistent across the analysis.
 
 ```python
-# Renaming columns in a single call
 df.rename(columns={
     'Hoursperweek': 'Working_Hours',
     'Nativecountry': 'Country',
@@ -61,14 +60,10 @@ df.rename(columns={
     'Income': 'Salary',
 }, inplace=True)
 
-# Assigning the renamed dataframe to a new variable
 AdultDataset = df
-
-# Display the renamed DataFrame
-AdultDataset
 ```
 
-This step ensured that later visualisations and grouping operations were easier to follow, especially when comparing salary, marital status, and working hours.
+This helped create cleaner visualisations, especially when comparing salary, marital status and working hours.
 
 ---
 
@@ -76,73 +71,68 @@ This step ensured that later visualisations and grouping operations were easier 
 
 ### Salary Distribution (Pie Chart)
 
-The first pie chart shows the overall split between people earning **≤50K** and **>50K**.
-The distribution is clear:
+The first pie chart shows the overall income split:
 
-* **75.2%** of individuals earn **≤50K**
+* **75.2%** earn **≤50K**
 * **24.8%** earn **>50K**
 
-This shows that the majority of the population in the dataset falls within the lower income bracket.
+The dataset is therefore weighted towards lower-income individuals.
 
 ### Gender and Salary Comparison
 
-The second chart compares income levels between males and females. A few points stand out:
+The second chart compares male and female earnings. Two things stand out:
 
-* More males earn **≤50K** compared with females.
-* More males also earn **>50K** compared with females.
-* This suggests that there are simply more men represented in the dataset, which affects the counts in both salary groups.
+* More men earn **≤50K** than women.
+* More men also earn **>50K** than women.
 
-The chart does not necessarily mean men are paid more because of gender. Instead, it likely reflects that more men are participating in the workforce in this dataset, so both the lower and higher income bands show higher numbers for males.
+This pattern reflects the fact that there are simply more men in the dataset. It does not by itself prove income inequality, but it does show that male counts dominate both income groups.
 
 ### Age Distribution
 
-This plot shows how ages are distributed in the dataset.
+This chart shows how ages spread across the dataset.
 
 <img width="1040" height="562" alt="image" src="https://github.com/user-attachments/assets/5f5c096b-395c-4fa7-9c69-90f11f3ab28c" />
 
-
-
 ### Marital Status and Income
 
-This graph compares marital status against income brackets.
+This visual compares the grouped marital status categories with salary brackets.
 
 <img width="1035" height="716" alt="image" src="https://github.com/user-attachments/assets/fafaea47-535f-4f79-a9da-9316f9508feb" />
-
 
 ---
 
 ## Interpretation
 
-1. **Education strongly influences income.**
-   People with degrees, masters, or doctorates are far more likely to earn above 50K.
+1. **Education is the strongest predictor of income.**
+   Higher qualifications are linked with a greater share of >50K earners.
 
-2. **Age contributes, particularly mid-career.**
-   Higher income is more common between ages 35 and 55.
+2. **Age plays a clear role.**
+   Earnings tend to increase from early adulthood and peak between the mid-30s and mid-50s.
 
-3. **Marital status shows a link with higher earnings.**
-   Married individuals have a larger share of >50K incomes.
+3. **Marital status shows a financial pattern.**
+   Married individuals are more likely to fall into the >50K group.
 
-4. **Gender shows income differences.**
-   A higher proportion of men earn above 50K compared with women.
+4. **Gender differences are visible.**
+   More men appear in both income groups, which reflects their higher representation in the dataset.
 
-5. **Workclass affects earnings, but not as strongly as education.**
-   Private workers form the largest group overall, and income varies widely.
+5. **Workclass influences earnings, though not as strongly as education.**
+   Private sector workers dominate the dataset and show varied income levels.
 
 ---
 
 ## Conclusion
 
-After cleaning and grouping the dataset, several consistent patterns appear. Education is the clearest predictor of income, with higher-level qualifications tied to better pay. Marital status, age, and gender also show clear trends. The visualisations highlight these relationships and support the value of structuring the data before analysis.
+Cleaning and grouping the dataset allowed the main income patterns to stand out clearly.
+Education shows the strongest link to higher earnings, supported by trends in age, marital status and gender. The visualisations provide a clear picture of how these factors interact across the dataset.
 
 ---
 
 ## Future Work
 
-* Build predictive models for salary using machine learning.
-* Run feature importance analysis to confirm key variables.
-* Add heatmaps, pair-plots, or correlation matrices.
-* Explore combined factors such as gender plus education.
-* Include hypothesis testing to measure significance.
-* Use logistic regression, random forests, or boosting models.
-* Create an interactive dashboard using Plotly, Streamlit, or Power BI.
-
+* Build predictive salary models using machine learning.
+* Examine feature importance to confirm key drivers of income.
+* Add correlation matrices and other extended visualisations.
+* Explore combined factors such as education plus gender.
+* Carry out hypothesis testing on significant differences.
+* Use logistic regression, random forests or boosting models.
+* Create static dashboard images (Python or Power BI) for deeper comparisons.
