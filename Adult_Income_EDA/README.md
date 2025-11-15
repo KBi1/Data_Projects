@@ -128,11 +128,7 @@ Education shows the strongest link to higher earnings, supported by trends in ag
 ---
 
 ## Future Work
-
 * Build predictive salary models using machine learning.
-* Examine feature importance to confirm key drivers of income.
 * Add correlation matrices and other extended visualisations.
-* Explore combined factors such as education plus gender.
-* Carry out hypothesis testing on significant differences.
 * Use logistic regression, random forests or boosting models.
-* Create static dashboard images (Python or Power BI) for deeper comparisons.
+* Create static dashboard images (Power BI) for deeper comparisons.
