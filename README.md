@@ -38,9 +38,3 @@ Planned updates include:
 * More detailed documentation of the processing and cleaning steps
 
 ---
-
-If you’d like, I can also:
-
-✓ rewrite the README for your **Adult Income** project
-✓ help you name each project folder and file
-✓ check your structure so everything is clean and consistent for GitHub
