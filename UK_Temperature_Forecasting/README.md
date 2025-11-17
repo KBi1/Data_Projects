@@ -1,139 +1,150 @@
-# UK Temperature Forecasting – Linear Regression and ARIMA
-Using the *GlobalLandTemperaturesByCity* Dataset
+# UK Temperature Forecasting
+This project uses the **GlobalLandTemperaturesByCity** dataset to analyse long-term temperature patterns in the United Kingdom and produce short-term forecasts.
 
-Dataset URL: https://www.kaggle.com/datasets/aatithi/globallandtemperaturesbycity
+**Dataset source:**
+Kaggle – *Global Land Temperatures by City*
+https://www.kaggle.com/datasets/aatithi/globallandtemperaturesbycity
 
 ## Overview
-
-This project explores long-term temperature patterns in the United Kingdom using the GlobalLandTemperaturesByCity dataset. The aim is to clean the data, prepare a UK-specific subset, and create clear visualisations that highlight yearly and seasonal behaviour. Additional forecasting work is included using Linear Regression and an ARIMA time series model.
+This project looks at long-term temperature patterns in the United Kingdom. The aim was to clean the data, extract UK-specific records, create clear visualisations, and produce short-term forecasts using Linear Regression and an ARIMA time series model.
 
 ---
 
 ## Data Cleaning and Preparation
 
 ### Removing Missing Values
-
-The dataset contains gaps where temperature readings were not recorded. These records were removed to ensure that the analysis reflects only valid observations.
+The dataset contains some rows where the temperature is not recorded. These have to be removed because missing values can distort averages, mislead the model, and reduce the reliability of the trends.
 
 ```python
 df = df.dropna(subset=['AverageTemperature'])
 ```
 
-### Selecting United Kingdom Records
-
-The full dataset covers thousands of cities around the world, so it was first filtered to include only UK entries. This ensures that all calculations and plots relate strictly to the United Kingdom.
+### Filtering for the United Kingdom
+Because the dataset includes cities from across the world, it was filtered so only UK records were kept. This ensures all results and charts relate to UK temperatures only.
 
 ```python
 df_UK = df[df['Country'] == 'United Kingdom']
 ```
 
 ### Creating a Yearly Temperature Feature
-
-Annual averages were calculated to make long-term patterns easier to interpret. Since the dataset provides temperature measurements at the monthly level, the data can be noisy when viewed directly. Grouping by year and taking the mean smooths out the regular seasonal cycle, making multi-decade trends more visible.
+The raw data is reported monthly, which makes long-term patterns difficult to see. To fix this, yearly averages were calculated. This smooths out seasonal changes and makes multi-decade trends much clearer.
 
 ```python
 yearly_avg = df_UK.groupby('Year')['AverageTemperature'].mean().reset_index()
 ```
 
-### Creating a Monthly Temperature Summary
-
-To understand seasonal behaviour, the average temperature for each month was also calculated.
+### Monthly Temperature Summary
+A monthly average was also created so that seasonal behaviour could be visualised.
 
 ```python
 monthly_avg = df_UK.groupby('Month')['AverageTemperature'].mean()
 ```
-
 ---
 
 ## Visual Analysis
 
-### Yearly Temperature Trend (1743–2013)
-
-This line chart shows the average yearly temperature over a long historical span. It highlights natural fluctuations and a gradual warming trend in modern decades.
-
-<img width="1389" height="590" alt="image" src="https://github.com/user-attachments/assets/440155bf-1c7b-4da8-a42c-0efd118495a1" />
+### Average Temperature by Year (1743–2013)
+This chart shows how UK temperatures have changed over a long period. Although the values fluctuate from year to year, the general pattern shows a gradual warming trend in the more recent decades.
+<img width="1389" height="590" alt="image" src="https://github.com/user-attachments/assets/6e2b450a-2ea5-4edb-a756-dbf47c58353e" />
 
 ---
+### Average Temperature by Month
 
-### Monthly Temperature Pattern
+This chart shows the familiar UK seasonal pattern.
+The coldest months are January to March, and the warmest are July and August.
 
-This bar chart shows the average temperature for each month across the dataset. It follows the familiar UK seasonal structure:
-
-* Coldest months: January to March
-* Warmest months: July and August
-* Cooling period towards winter from September
-
-<img width="989" height="490" alt="image" src="https://github.com/user-attachments/assets/57b8587d-43dc-409b-9fe8-8bcfa345fd0a" />
+<img width="989" height="490" alt="image" src="https://github.com/user-attachments/assets/8463bba7-e6e8-4057-b50f-50126eb98ba9" />
 
 ---
 
 ## Forecasting Models
 
-Two simple forecasting methods were explored using the yearly average data from 1950 onwards.
+Two simple methods were used to produce short-term forecasts for 2022 and 2023.
 
 ---
 
 ## Linear Regression Temperature Forecast
 
-A linear trend line was fitted to the post-1950 data to estimate temperatures for the next two years.
+Linear Regression fits a straight line through the data to show the general direction of change. It is a simple way to estimate how temperatures may continue in the near future.
 
-**Linear Regression Predictions:**
+### Code Used
 
-* 2022: 10.24°C
-* 2023: 10.26°C
+```python
+# Prepare data for Linear Regression
+recent_data = yearly_avg[yearly_avg['Year'] >= 1950]  # Filter data from 1950
+X_linear = recent_data['Year'].values.reshape(-1, 1)  # Feature: Year
+y_linear = recent_data['AverageTemperature'].values   # Target: Temperature
+
+# Train Linear Regression model
+linear_model = LinearRegression()  # Create model
+linear_model.fit(X_linear, y_linear)  # Train model
+
+# Predict temperature for 2022 and 2023
+future_years = np.array([2022, 2023]).reshape(-1, 1)  # Years to predict
+predicted_linear = linear_model.predict(future_years)  # Make predictions
+```
+
+### Linear Regression Results
+
+| Year | Predicted Temperature |
+| ---- | --------------------- |
+| 2022 | **10.24°C**           |
+| 2023 | **10.26°C**           |
 
 ---
 
 ## ARIMA Time Series Forecast
 
-A time series model (ARIMA (1,1,1)) was fitted to the same post-1950 UK data. This approach models temporal patterns directly and produces a short-term two-year forecast.
+ARIMA is a time-series model that looks at patterns over time, such as trends and small changes between years. It is useful when the data points depend on previous values.
+
+### Code Used
+
+```python
+# Prepare data for ARIMA
+train_data = yearly_avg[yearly_avg['Year'] >= 1950]  # Use data from 1950
+
+# Fit ARIMA model
+arima_model = ARIMA(train_data['AverageTemperature'], order=(1, 1, 1)).fit()  # Train model
+
+# Forecast next 2 years
+arima_forecast = arima_model.forecast(steps=2)  # Predict 2022-2023
+future_years_arima = [2022, 2023]  # Target years
+
+```
+
+### ARIMA Results
+
+| Year | Predicted Temperature |
+| ---- | --------------------- |
+| 2022 | **9.86°C**            |
+| 2023 | **9.92°C**            |
+
 ---
 
-### ARIMA Forecast Results
+## Comparison of Forecasts (2022–2023)
 
-**ARIMA Predictions:**
+| Year | ARIMA  | Linear Regression | Difference |
+| ---- | ------ | ----------------- | ---------- |
+| 2022 | 9.86°C | 10.24°C           | 0.39°C     |
+| 2023 | 9.92°C | 10.26°C           | 0.34°C     |
 
-* 2022: 9.86°C
-* 2023: 9.92°C
-
----
-
-## Temperature Predictions Comparison (2022–2023)
-
-
-### ARIMA Model Predictions:
-- 2022: 9.86°C
-- 2023: 9.92°C
-
-### Linear Regression Predictions:
-- 2022: 10.24°C
-- 2023: 10.26°C
-
-### Differences Between Models:
-- 2022 Difference: 0.39°C
-- 2023 Difference: 0.34°C
-
-
-The two models produce similar results overall, with Linear Regression giving slightly warmer estimates.
+Both models show a similar outcome: a small increase year on year.
+Linear Regression predicts slightly warmer values because it follows a straight upward trend. ARIMA gives a slightly more conservative estimate as it responds more closely to the recent data.
 
 ---
 
 ## Interpretation
-
-1. UK temperatures show a gradual upward trend over the modern period.
-2. Seasonal patterns are stable, with warm summers and cool winters.
-3. The Linear Regression model captures a simple upward trend.
-4. The ARIMA model reacts more closely to the recent data, producing slightly lower short-term forecasts.
-5. Differences between the two methods are small, which suggests that the underlying pattern is consistent.
+* UK temperatures have gradually warmed over the past several decades.
+* Seasonal patterns remain stable, with warm summers and cold winters.
+* Both forecasting methods suggest a small rise in temperature for 2022 and 2023.
+* The difference between ARIMA and Linear Regression is minor, which supports the overall pattern seen in the historical data.
 
 ---
 
 ## Future Work
 
-You may extend this project with:
-
-* A comparison between UK cities such as London, Birmingham and Manchester.
-* More advanced forecasting models such as random forests or gradient boosting.
-* Broader climate indicators such as variance, extremes or decade-based summaries.
-* Additional static dashboard images created in Power BI.
-* A wider global comparison with other major countries or climate zones.
+A few simple extensions could be added later:
+* Compare UK cities such as London, Birmingham and Manchester.
+* Add decade-level summaries to highlight long-term warming rates.
+* Include extra visualisations such as rolling averages or smoothing.
+* Add static Power BI charts.
