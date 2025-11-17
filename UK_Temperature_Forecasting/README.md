@@ -13,7 +13,12 @@ This project looks at long-term temperature patterns in the United Kingdom. The 
 ## Data Cleaning and Preparation
 
 ### Removing Missing Values
-The dataset contains some rows where the temperature is not recorded. These have to be removed because missing values can distort averages, mislead the model, and reduce the reliability of the trends.
+Some rows in the dataset don’t have a temperature recorded. We need to remove these because missing values can cause several problems:
+
+* **Wrong averages**: Calculating averages with missing values can give results that aren’t accurate.
+* **Model confusion**: Many models cannot work with missing data and may give errors or poor predictions.
+* **Unreliable trends**: Missing values can make graphs and trends look misleading.
+* **Data consistency**: Removing incomplete rows ensures all remaining data is complete, making analysis more trustworthy.
 
 ```python
 df = df.dropna(subset=['AverageTemperature'])
