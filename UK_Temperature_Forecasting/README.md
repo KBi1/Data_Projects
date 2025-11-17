@@ -1,6 +1,8 @@
 # UK Temperature Forecasting – Linear Regression and ARIMA
 Using the *GlobalLandTemperaturesByCity* Dataset
 
+Dataset URL: https://www.kaggle.com/datasets/aatithi/globallandtemperaturesbycity
+
 ## Overview
 
 This project explores long-term temperature patterns in the United Kingdom using the GlobalLandTemperaturesByCity dataset. The aim is to clean the data, prepare a UK-specific subset, and create clear visualisations that highlight yearly and seasonal behaviour. Additional forecasting work is included using Linear Regression and an ARIMA time series model.
